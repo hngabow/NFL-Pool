@@ -1,5 +1,6 @@
 import json
 import requests 
+from collections import defaultdict
 from NflSiteStrings import *
 class NflWebReader:
     def __init__(self):
@@ -7,6 +8,7 @@ class NflWebReader:
         self.team_data = {}
         self.afc_standings = {}
         self.nfc_standings = {}
+        self.division_leaders = defaultdict(list)
     def setTeamData(self):
         page = requests.get(self.url)
         for line in page.content.split("\n"):
@@ -27,3 +29,5 @@ class NflWebReader:
                 self.afc_standings[team['fullName']] = (team[WINNING_PCT])
             else:
                 raise Exception("Could not determine conference, data likely changed")
+            if team[DIVISION_RANK] == 1:
+                self.division_leaders[team[DIVISION]].append(team['fullName'])
