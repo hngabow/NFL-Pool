@@ -6,8 +6,8 @@ class NflWebReader:
     def __init__(self):
         self.url = 'https://www.nfl.com/standings'
         self.team_data = {}
-        self.afc_standings = {}
-        self.nfc_standings = {}
+        self.team_winning_pcts = {}
+        self.team_conferences = {}
         self.division_leaders = defaultdict(list)
     def setTeamData(self):
         page = requests.get(self.url)
@@ -23,11 +23,7 @@ class NflWebReader:
         return True
     def populateStandings(self):
         for team in self.team_data['instance']['teamRecords']:
-            if team[CONFERENCE] == NFC:
-                self.nfc_standings[team['fullName']] = (team[WINNING_PCT])
-            elif team[CONFERENCE] == AFC:
-                self.afc_standings[team['fullName']] = (team[WINNING_PCT])
-            else:
-                raise Exception("Could not determine conference, data likely changed")
+            self.team_conferences[team['fullName']] = team[CONFERENCE]
+            self.team_winning_pcts[team['fullName']] = team[WINNING_PCT]
             if team[DIVISION_RANK] == 1:
                 self.division_leaders[team[DIVISION]].append(team['fullName'])

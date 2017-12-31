@@ -1,7 +1,8 @@
 from PicksReaders import PicksFileReader, PicksStub
 from ContestantsNotifier import SpyNotifier 
 from StandingsReaders import NflWebReader
-
+from TeamInfo import TeamInfo
+from NflSiteStrings import AFC, NFC
 class SendWeeklyStandings(object):
     def __init__(self, picks_reader, notifier, standings_reader):
         self.picks = picks_reader
@@ -10,20 +11,18 @@ class SendWeeklyStandings(object):
 
     def getRelevantStandings(self):
         error_list = []
-        afc_results = []
-        nfc_results = []
-        for contestant, picks in self.picks.contestant_picks.iteritems():
-            for pick in picks:
-                if pick not in self.standings_reader.nfc_standings and pick not in self.standings_reader.afc_standings:
-                    error_list.append(pick + " not in NFL standings")
-            afc_results.append((contestant, picks[0], self.standings_reader.afc_standings[picks[0]]))
-            nfc_results.append((contestant, picks[1], self.standings_reader.nfc_standings[picks[1]]))
-        afc_results.sort( key=lambda team_entry: team_entry[2], reverse=True)
-        nfc_results.sort( key=lambda team_entry: team_entry[2], reverse=True)
+        teams_list = []
+        for team_name in self.standings_reader.team_winning_pcts.keys():
+            new_team = TeamInfo(team_name)
+            new_team.populateTeamData(self.standings_reader.team_winning_pcts, self.standings_reader.team_conferences, self.standings_reader.division_leaders, self.picks.contestant_picks)
+            teams_list.append(new_team)
+        #afc_results.sort( key=lambda team_entry: team_entry[2], reverse=True)
+        #sort the afc results first by adding 10 to their max 1.00 winning pct, then sort by winning pct
+        teams_list.sort(key=lambda team_entry: 10.0 + team_entry.winning_pct if team_entry.conference == AFC else team_entry.winning_pct, reverse=True)
         if len(error_list) != 0:
             notifier.alert(error_list)
         else:
-            notifier.notify(afc_results, nfc_results)
+            notifier.notify(teams_list)
 
 
 if __name__ == "__main__":
