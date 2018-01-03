@@ -4,6 +4,7 @@ class TeamInfo(object):
         self.team_name = name
         self.winning_pct = 0.0
         self.contestants = []
+        self.conference = ""
         self.leading_division = ""
 
     def populateTeamData(self, winning_pcts, conference_membership, division_info, contestant_picks):
