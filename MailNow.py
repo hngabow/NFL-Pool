@@ -1,3 +1,11 @@
+# MailNow can be used in a future version
+# for now we will always mail at 4am tuesday, so no routine is needed
+#
+# in the future version use Aaron's improvements: 
+# 1. pass this_day into check_done so it will be easier to unit test. 
+# 2. Similarly pass in an object you call hasPlayed(team) on it would allow for test stub.
+# 3. remove the import of Picks reader and just have it take a list of teams, just to minimize coupling.
+#
 #!/usr/bin/python
 # our code is executed by Cron at 4AM on Monday and Tuesday of each week
 # check_done() exits the run if it's Monday and a picked team will play in MNF
