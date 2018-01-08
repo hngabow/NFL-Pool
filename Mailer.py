@@ -23,11 +23,11 @@ def read_addresses():
 halEC,halEP,aaronE,contestantsE= read_addresses()
 
 # some calls and relevant files
-#mailer("'need picks'", hal, aaron, 'football_need')
+mailer("'NFL Pool: Worst Season Ever'", 'HalEC', contestantsE, 'nfl')
+#mailer("'NFL Pool: Worst Season Ever'", '', halEC, 'nfl')
+#mailer("'need picks'", halEC, aaronE, 'football_need')
 #mailer("'need picks'", '', halEP, 'nfl')
-#mailer("'need picks'", '', "`cat football_addresses_2`", 'nfl')
 
 #football_addresses is a file containing contestant emails
 #football_need is a file containing request for picks, sent in August
 #nfl is a file containing the new standings message'
-
