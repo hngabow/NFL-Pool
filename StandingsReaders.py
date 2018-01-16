@@ -4,7 +4,7 @@ from collections import defaultdict
 from NflSiteStrings import *
 class NflWebReader:
     def __init__(self):
-        self.url = 'https://www.nfl.com/standings'
+        self.url = 'https://www.nfl.com/standings/division/2017/REG'
         self.team_data = {}
         self.team_winning_pcts = {}
         self.team_conferences = {}
